@@ -23,7 +23,7 @@ def mask_(tensors: th.Tensor, maskval: float = 0.0, mask_diagonal: bool = True):
     Args:
         tensors (Tensor): Batch of Tensors
         maskval (float, optional): Mask value to set. Defaults to 0.0.
-        mask_diagonal (bool, optional): Whether to mask diagonally. Defaults to True.
+        mask_diagonal (bool, optional): Whether to also mask the diagonal. Defaults to True.
     """
     h, w = tensors.size(-2), tensors.size(-1)
 

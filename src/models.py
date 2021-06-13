@@ -5,23 +5,6 @@ from torch import nn
 from utils import mask_
 
 
-class MultiHeadAttention(nn.Module):
-
-    def __init__(self, num_heads: int, query_dim: int, key_dim: int, value_dim: int):
-        super().__init__()
-        # TODO (Enhancements): Automatically all input arguments to self._layers
-        # without loosing input signature nor using kwargs.
-        # Also Note: Explore self.save_hyperparameters in pl.LightningModule
-        self._layers(num_heads, query_dim, key_dim, value_dim)
-
-    def _layers(self, num_heads: int, query_dim: int, key_dim: int, value_dim: int):
-        self.query = nn.Linear(quer)
-
-    def forward(self, x):
-        pass
-        return x
-
-
 class MultiHeadSelfAttention(nn.Module):
     """
     Description:
@@ -47,11 +30,9 @@ class MultiHeadSelfAttention(nn.Module):
         self.keys = nn.Linear(embed_size, embed_size, bias=False)
         self.queries = nn.Linear(embed_size, embed_size, bias=False)
         self.values = nn.Linear(embed_size, embed_size, bias=False)
-
         self.merged_heads = nn.Linear(embed_size, embed_size)
 
     def forward(self, x: th.Tensor) -> th.tensor:
-
         batch_size, seq_len, embed_size = x.size()
         sub_size = embed_size // self.heads
         assert embed_size == self.embed_size, f'Input embedding dim ({embed_size}) should " \
