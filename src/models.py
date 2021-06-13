@@ -31,7 +31,8 @@ class MultiHeadSelfAttention(nn.Module):
 
     def __init__(self, embed_size: int, heads: int = 8, mask: bool = False):
         super().__init__()
-        assert embed_size % heads == 0, f'Embedding dimension ({embed_size}) should be divisible by nr. of heads ({heads})'
+        assert embed_size % heads == 0, f'Embedding dimension ({embed_size}) should be " \
+            "divisible by nr. of heads ({heads})'
         self._layers(embed_size, heads, mask)
 
     def _layers(self, embed_size: int, heads: int, mask: bool = False):
@@ -40,31 +41,35 @@ class MultiHeadSelfAttention(nn.Module):
         self.mask = mask
 
         # sub_size = embed_size // heads
-        # - We will break the embedding into `heads` chunks and feed each to a different attention head
+        # - We will break the embedding into `heads` chunks and feed each to a different
+        # attention head
 
         self.keys = nn.Linear(embed_size, embed_size, bias=False)
         self.queries = nn.Linear(embed_size, embed_size, bias=False)
         self.values = nn.Linear(embed_size, embed_size, bias=False)
 
-        self.unifyheads = nn.Linear(embed_size, embed_size)
+        self.merged_heads = nn.Linear(embed_size, embed_size)
 
     def forward(self, x: th.Tensor) -> th.tensor:
 
         batch_size, seq_len, embed_size = x.size()
         sub_size = embed_size // self.heads
-        assert embed_size == self.embed_size, f'Input embedding dim ({embed_size}) should match layer embedding dim ({self.embed_size})'
+        assert embed_size == self.embed_size, f'Input embedding dim ({embed_size}) should " \
+            "match layer embedding dim ({self.embed_size})'
 
         keys = self.keys(x).view(batch_size, seq_len, self.heads, sub_size)
         queries = self.queries(x).view(batch_size, seq_len, self.heads, sub_size)
         values = self.values(x).view(batch_size, seq_len, self.heads, sub_size)
 
-        # -- We first compute the k/q/v'sub_size on the whole embedding vectors, and then split into the different heads.
+        # -- We first compute the k/q/v'sub_size on the whole embedding vectors, and
+        # then split into the different heads.
         #    See the following video for an explanation: https://youtu.be/KmAISyVvE1Y
 
         # Compute scaled dot-product self-attention
 
         # - fold heads into the batch dimension
-        keys = keys.transpose(1, 2).contiguous().view(batch_size * self.heads, seq_len, sub_size)
+        keys = keys.transpose(1, 2).contiguous().view(
+            batch_size * self.heads, seq_len, sub_size)
         queries = queries.transpose(1, 2).contiguous().view(
             batch_size * self.heads, seq_len, sub_size)
         values = values.transpose(1, 2).contiguous().view(
@@ -92,4 +97,4 @@ class MultiHeadSelfAttention(nn.Module):
         # swap self.heads, seq_len back, unify heads
         out = out.transpose(1, 2).contiguous().view(batch_size, seq_len, sub_size * self.heads)
 
-        return self.unifyheads(out)
+        return self.merged_heads(out)
