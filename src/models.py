@@ -79,3 +79,17 @@ class MultiHeadSelfAttention(nn.Module):
         out = out.transpose(1, 2).contiguous().view(batch_size, seq_len, sub_size * self.heads)
 
         return self.merged_heads(out)
+
+
+class ResidulLayerNorm(nn.Module):
+
+    def __init__(self, dim, p):
+        super().__init__()
+        self._layers(dim, p)
+
+    def _layers(self, dim, p):
+        self.layer_norm = nn.LayerNorm(dim)
+        self.dropout = nn.Dropout(p)
+
+    def forward(self, *tensors: th.Tensor):
+        return self.layer_norm(self.dropout(*tensors) + tensors[-1])
