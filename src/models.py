@@ -2,7 +2,7 @@ import torch as th
 import torch.nn.functional as F
 from torch import nn
 
-from utils import mask_
+from .utils import mask_
 
 
 class MultiHeadSelfAttention(nn.Module):
