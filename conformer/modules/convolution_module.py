@@ -5,7 +5,7 @@ from torch import nn
 
 class ConvolutionModule(nn.Module):
 
-    def __init__(self, input_dim: int,
+    def __init__(self, input_dim: int = 512,
                  expansion_factor: int = 4,
                  depth_kernel_size: int = 31,
                  drop_prob: int = 0.1):
@@ -17,7 +17,7 @@ class ConvolutionModule(nn.Module):
                 depth_kernel_size: int = 31,
                 drop_prob: int = 0.1):
         self.layer_norm = nn.LayerNorm(input_dim)
-        self.pointwise_conv1 = nn.Conv2d(input_dim,
+        self.pointwise_conv1 = nn.Conv1d(input_dim,
                                          input_dim * expansion_factor,
                                          kernel_size=1,
                                          stride=1,
@@ -30,7 +30,7 @@ class ConvolutionModule(nn.Module):
                                         padding=(depth_kernel_size - 1) // 2,
                                         bias=False
                                         )
-        self.pointwise_conv2 = nn.Conv2d(input_dim,
+        self.pointwise_conv2 = nn.Conv1d(input_dim,
                                          input_dim * expansion_factor,
                                          kernel_size=1,
                                          stride=1,
