@@ -166,3 +166,6 @@ logs/
 # Video
 .mp4
 .avi
+
+# Pytest
+conftest.py
