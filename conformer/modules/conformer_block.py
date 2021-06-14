@@ -1,6 +1,6 @@
 from torch import nn
 
-from .convoluion_module import ConvolutionModule
+from .convolution_module import ConvolutionModule
 from .feedforward import FeedForward
 from .multihead_self_attention import MultiHeadSelfAttention
 
