@@ -17,6 +17,7 @@ dependencies:
   - pandas
   - autopep8
   - flake8
+  - pytest=6.2.4
   - jupyter
   - pip:
       # - pytorch-lightning-bolts
