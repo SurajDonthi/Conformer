@@ -14,9 +14,11 @@ class ConformerBlock(nn.Module):
                  depth_kernel_size: int = 31,
                  drop_prob: float = 0.1):
         super().__init__()
-        self._layers(embed_size, heads, expansion_factor, depth_kernel_size, drop_prob)
+        self._layers(embed_size, heads, expansion_factor,
+                     conv_expansion_factor, depth_kernel_size, drop_prob)
 
     def _layers(self, embed_size: int, heads: int, expansion_factor: int,
+                conv_expansion_factor: int,
                 depth_kernel_size: int, drop_prob: float):
         self.ff1 = FeedForward(embed_size, expansion_factor, drop_prob)
         self.mha = MultiHeadSelfAttention(embed_size, heads=heads)
@@ -29,8 +31,8 @@ class ConformerBlock(nn.Module):
         self.layer_norm = nn.LayerNorm(embed_size)
 
     def forward(self, x):
-        x = self.ff1(x) + x
+        x = self.ff1(x) / 2 + x
         x = self.mha(x) + x
         x = self.conv(x) + x
-        x = self.ff2(x) + x
+        x = self.ff2(x) / 2 + x
         return self.layer_norm(x)
