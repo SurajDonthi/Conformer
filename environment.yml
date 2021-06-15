@@ -18,6 +18,7 @@ dependencies:
   - autopep8
   - flake8
   - pytest=6.2.4
+  - loguru=0.5.3
   - jupyter
   - pip:
       # - pytorch-lightning-bolts

@@ -10,6 +10,7 @@ class ConformerBlock(nn.Module):
     def __init__(self, embed_size: int = 512,
                  heads: int = 8,
                  expansion_factor: int = 4,
+                 conv_expansion_factor: int = 2,
                  depth_kernel_size: int = 31,
                  drop_prob: float = 0.1):
         super().__init__()
@@ -20,7 +21,7 @@ class ConformerBlock(nn.Module):
         self.ff1 = FeedForward(embed_size, expansion_factor, drop_prob)
         self.mha = MultiHeadSelfAttention(embed_size, heads=heads)
         self.conv = ConvolutionModule(embed_size,
-                                      expansion_factor,
+                                      conv_expansion_factor,
                                       depth_kernel_size,
                                       drop_prob=drop_prob,
                                       )
