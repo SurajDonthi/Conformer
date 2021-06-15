@@ -46,3 +46,24 @@ class ConvolutionModule(nn.Module):
 
         x = self.dropout(self.pointwise_conv2(x))
         return x.transpose(1, 2).contiguous()
+
+
+class Conv2dSubsampling(nn.Module):
+
+    def __init__(self, in_channels: int, out_channels: int):
+        super().__init__()
+        self._layers(in_channels, out_channels)
+
+    def _layers(self, in_channels: int, out_channels: int):
+        self.conv1 = nn.Conv2(in_channels, out_channels, kernel_size=3, stride=2)
+        self.conv2 = nn.Conv2(out_channels, out_channels, kernel_size=3, stride=2)
+
+    def forward(self, x: th.Tensor, input_lengths: int):
+        x = th.relu(self.conv1(x))
+        x = th.relu(self.conv2(x))
+        batch_size, channels, subsampled_lengths, subsampled_dim = x.size()
+        x = x.permute(0, 2, 1, 3)
+        x = x.contiguous().view(batch_size, subsampled_lengths, channels * subsampled_dim)
+        output_lengths = input_lengths >> 2
+        output_lengths -= 1
+        return x, output_lengths
