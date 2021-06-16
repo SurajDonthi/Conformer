@@ -55,8 +55,8 @@ class Conv2dSubsampling(nn.Module):
         self._layers(in_channels, out_channels)
 
     def _layers(self, in_channels: int, out_channels: int):
-        self.conv1 = nn.Conv2(in_channels, out_channels, kernel_size=3, stride=2)
-        self.conv2 = nn.Conv2(out_channels, out_channels, kernel_size=3, stride=2)
+        self.conv1 = nn.Conv2d(in_channels, out_channels, kernel_size=3, stride=2)
+        self.conv2 = nn.Conv2d(out_channels, out_channels, kernel_size=3, stride=2)
 
     def forward(self, x: th.Tensor, input_lengths: int):
         x = th.relu(self.conv1(x))
