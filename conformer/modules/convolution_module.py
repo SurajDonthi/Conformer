@@ -59,7 +59,7 @@ class Conv2dSubsampling(nn.Module):
         self.conv2 = nn.Conv2d(out_channels, out_channels, kernel_size=3, stride=2)
 
     def forward(self, x: th.Tensor, input_lengths: int):
-        x = th.relu(self.conv1(x))
+        x = th.relu(self.conv1(x.unsqueeze(1)))
         x = th.relu(self.conv2(x))
         batch_size, channels, subsampled_lengths, subsampled_dim = x.size()
         x = x.permute(0, 2, 1, 3)
