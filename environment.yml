@@ -23,4 +23,5 @@ dependencies:
   - pip:
       # - pytorch-lightning-bolts
       - test-tube
+      - torch-tb-profiler
 prefix: ~/anaconda3/envs/PytorchEnv
