@@ -6,5 +6,5 @@
   "python.testing.pytestEnabled": true,
   "testing.automaticallyOpenPeekViewDuringAutoRun": true,
   "python.testing.cwd": "${workspaceFolder}/",
-  "python.pythonPath": "/root/miniconda3/envs/PytorchLightningEnv/bin/python"
+  "python.pythonPath": "~/miniconda3/envs/PytorchLightningEnv/bin/python"
 }
