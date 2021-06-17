@@ -5,5 +5,6 @@
   "python.envFile": "${workspaceFolder}/.vscode/.env",
   "python.testing.pytestEnabled": true,
   "testing.automaticallyOpenPeekViewDuringAutoRun": true,
-  "python.testing.cwd": "${workspaceFolder}/"
+  "python.testing.cwd": "${workspaceFolder}/",
+  "python.pythonPath": "/root/miniconda3/envs/PytorchLightningEnv/bin/python"
 }
