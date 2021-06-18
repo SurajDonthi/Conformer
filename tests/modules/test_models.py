@@ -24,7 +24,7 @@ def test_input_with_default_values():
         num_conformer_layers=num_conformer_layers
     )
 
-    outputs, output_length = model(inputs, input_lengths, targets, target_lengths)
+    outputs = model(inputs, input_lengths, targets, target_lengths)
     logger.info(
-        f'Outputs shape: {outputs.shape}, Outputs length: {output_length}')
+        f'Outputs shape: {outputs.shape}, ')  # Outputs length: {output_length}')
     assert outputs.shape == th.Size([3, 9, 512])
