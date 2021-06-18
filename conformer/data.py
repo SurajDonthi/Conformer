@@ -3,17 +3,18 @@ from torch.utils.data import DataLoader, Dataset
 from base import BaseDataModule
 
 
-class Dataset(Dataset):
+class SpeechDataset(Dataset):
 
-    def __init__(self):
-        super(Dataset, self).__init__()
+    def __init__(self, data):
+        super().__init__()
+        self.data = data
 
     def __len__(self):
-        return len(None)
+        return len(self.data)
 
     def __getitem__(self, index):
-        sample = None
-        return sample
+        x = self.data[index]
+        return x
 
 
 class CustomDataLoader(BaseDataModule):
@@ -23,9 +24,7 @@ class CustomDataLoader(BaseDataModule):
                  val_batchsize: int = 32,
                  test_batchsize: int = 32,
                  num_workers: int = 4,
-                 train_transforms=None,
-                 val_transforms=None,
-                 test_transforms=None):
+                 ):
 
         super().__init__()
 
@@ -42,10 +41,6 @@ class CustomDataLoader(BaseDataModule):
         self.test_batchsize = test_batchsize
         self.val_batchsize = val_batchsize
         self.num_workers = num_workers
-
-        self.train_transforms = train_transforms
-        self.val_transforms = val_transforms
-        self.test_transforms = test_transforms
 
     def prepare_data(self, *args, **kwargs):
         return super().prepare_data(*args, **kwargs)

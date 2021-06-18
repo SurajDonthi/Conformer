@@ -3,8 +3,8 @@ from argparse import ArgumentParser
 import torch.nn.functional as F
 from pytorch_lightning.utilities import parsing
 
-from base import BaseModule
-from models import Model
+from .base import BaseModule
+from .modules import ConformerModel
 
 LOSSES = {'bce': F.binary_cross_entropy,
           'bce_logits': F.binary_cross_entropy_with_logits,
