@@ -8,6 +8,26 @@ from .linear import Linear
 from .rnnt_decoder import RNNTDecoder
 
 
+class JointNetwork(nn.Module):
+
+    def __init__(self):
+        super().__init__()
+
+    def forward(self, encoder_outputs, decoder_outputs):
+        if encoder_outputs.dim() == 3 and decoder_outputs.dim() == 3:
+            input_length = encoder_outputs.size(1)
+            target_length = decoder_outputs.size(1)
+
+            encoder_outputs = encoder_outputs.unsqueeze(2)
+            decoder_outputs = decoder_outputs.unsqueeze(1)
+
+            encoder_outputs = encoder_outputs.repeat([1, 1, target_length, 1])
+            decoder_outputs = decoder_outputs.repeat([1, input_length, 1, 1])
+
+        outputs = th.cat((encoder_outputs, decoder_outputs), dim=-1)
+        return outputs
+
+
 class ConformerModel(nn.Module):
 
     def __init__(
@@ -61,23 +81,3 @@ class ConformerModel(nn.Module):
         output = self.joint(encoder_out, decoder_out)
         output = self.fc(output)
         return output
-
-
-class JointNetwork(nn.Module):
-
-    def __init__(self):
-        super().__init__()
-
-    def forward(self, encoder_outputs, decoder_outputs):
-        if encoder_outputs.dim() == 3 and decoder_outputs.dim() == 3:
-            input_length = encoder_outputs.size(1)
-            target_length = decoder_outputs.size(1)
-
-            encoder_outputs = encoder_outputs.unsqueeze(2)
-            decoder_outputs = decoder_outputs.unsqueeze(1)
-
-            encoder_outputs = encoder_outputs.repeat([1, 1, target_length, 1])
-            decoder_outputs = decoder_outputs.repeat([1, input_length, 1, 1])
-
-        outputs = th.cat((encoder_outputs, decoder_outputs), dim=-1)
-        return outputs
