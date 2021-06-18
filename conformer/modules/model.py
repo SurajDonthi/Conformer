@@ -1,3 +1,5 @@
+from typing import Literal
+
 import torch as th
 from torch import nn
 
@@ -10,22 +12,22 @@ class ConformerModel(nn.Module):
 
     def __init__(
         self,
-        input_dim,
-        encoder_dim,
-        decoder_dim,
-        num_classes,
-        num_heads,
-        num_conformer_layers,
-        decoder_rnn_layers,
-        expansion_factor,
-        conv_expansion_factor,
-        rnn_type,
-        input_dropout_p,
-        feed_forward_dropout_p,
-        attention_dropout_p,
-        conv_dropout_p,
-        depth_conv_kernel_size,
-        decoder_drop_p
+        num_classes: int,
+        input_dim: int = 80,
+        encoder_dim: int = 512,
+        decoder_dim: int = 640,
+        num_attention_heads: int = 8,
+        depth_conv_kernel_size: int = 31,
+        num_conformer_layers: int = 17,
+        num_decoder_rnn_layers: int = 1,
+        feed_forward_expansion_factor: int = 4,
+        conv_expansion_factor: int = 2,
+        rnn_type: Literal['lstm', 'gru', 'rnn'] = 'lstm',
+        input_dropout_p: float = 0.1,
+        feed_forward_dropout_p: float = 0.1,
+        attention_dropout_p: float = 0.1,
+        conv_dropout_p: float = 0.1,
+        decoder_drop_p: float = 0.1
     ):
         super().__init__()
 
@@ -33,8 +35,8 @@ class ConformerModel(nn.Module):
             input_dim,
             encoder_dim,
             num_conformer_layers,
-            num_heads,
-            expansion_factor,
+            num_attention_heads,
+            feed_forward_expansion_factor,
             conv_expansion_factor,
             input_dropout_p,
             feed_forward_dropout_p,
@@ -46,7 +48,7 @@ class ConformerModel(nn.Module):
             num_classes,
             decoder_dim,
             encoder_dim,
-            decoder_rnn_layers,
+            num_decoder_rnn_layers,
             rnn_type,
             dropout_p=decoder_drop_p
         )
